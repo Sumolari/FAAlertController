@@ -65,43 +65,54 @@ class FAAlertActionView: UIView {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         addGestureRecognizer(tap)
-        let font: UIFont
-        let preferredFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle("UICTFontTextStyleShortHeadline"))
-        let regularFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle("UICTFontTextStyleShortBody"))
         
-        switch action.style {
-        case .default:
-            switch  FAAlertControllerAppearanceManager.sharedInstance.preferredStyle {
-            case .alert, .picker:
-                font = isPreferred ? preferredFont : regularFont
-            case.actionSheet:
-                let _font = UIFont.preferredFont(forTextStyle: UIFontTextStyle("CTFontRegularUsage"))
-                font = _font.withSize(20)
+        if let title = action.title {
+        
+            let font: UIFont
+            let preferredFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle("UICTFontTextStyleShortHeadline"))
+            let regularFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle("UICTFontTextStyleShortBody"))
+            
+            switch action.style {
+            case .default:
+                switch  FAAlertControllerAppearanceManager.sharedInstance.preferredStyle {
+                case .alert, .picker:
+                    font = isPreferred ? preferredFont : regularFont
+                case.actionSheet:
+                    let _font = UIFont.preferredFont(forTextStyle: UIFontTextStyle("CTFontRegularUsage"))
+                    font = _font.withSize(20)
+                }
+            case .cancel:
+                switch FAAlertControllerAppearanceManager.sharedInstance.preferredStyle {
+                case .alert, .picker:
+                    font = isPreferred ? preferredFont : regularFont
+                case .actionSheet:
+                    let _font = UIFont.preferredFont(forTextStyle: UIFontTextStyle("CTFontEmphasizedUsage"))
+                    font = _font.withSize(20)
+                }
+                label.textColor = FAAlertControllerAppearanceManager.sharedInstance.cancelButtonTintColor
+            case .destructive:
+                switch FAAlertControllerAppearanceManager.sharedInstance.preferredStyle {
+                case .alert, .picker:
+                    font = isPreferred ? preferredFont : regularFont
+                case .actionSheet:
+                    let _font = UIFont.preferredFont(forTextStyle: UIFontTextStyle("CTFontRegularUsage"))
+                    font = _font.withSize(20)
+                }
+                label.textColor = FAAlertControllerAppearanceManager.sharedInstance.destructiveButtonTintColor
             }
-        case .cancel:
-            switch FAAlertControllerAppearanceManager.sharedInstance.preferredStyle {
-            case .alert, .picker:
-                font = isPreferred ? preferredFont : regularFont
-            case .actionSheet:
-                let _font = UIFont.preferredFont(forTextStyle: UIFontTextStyle("CTFontEmphasizedUsage"))
-                font = _font.withSize(20)
-            }
-            label.textColor = FAAlertControllerAppearanceManager.sharedInstance.cancelButtonTintColor
-        case .destructive:
-            switch FAAlertControllerAppearanceManager.sharedInstance.preferredStyle {
-            case .alert, .picker:
-                font = isPreferred ? preferredFont : regularFont
-            case .actionSheet:
-                let _font = UIFont.preferredFont(forTextStyle: UIFontTextStyle("CTFontRegularUsage"))
-                font = _font.withSize(20)
-            }
-            label.textColor = FAAlertControllerAppearanceManager.sharedInstance.destructiveButtonTintColor
+            
+            label.font = font
+            label.text = title
+            label.textAlignment = .center
+            
+        } else if let attributedTitle = action.attributedTitle {
+            
+            label.textAlignment = .center
+            label.attributedText = attributedTitle
+            
         }
         
-        label.font = font
         label.minimumScaleFactor = 0.58
-        label.text = action.title!
-        label.textAlignment = .center
         label.sizeToFit()
         heightAnchor.constraint(equalToConstant: _height).isActive = true
         

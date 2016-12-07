@@ -38,7 +38,7 @@ public protocol FAAlertControllerDelegate {
 }
 
 /// A FAAlertController object displays an alert message to the user. This class replaces the UIController class for displaying alerts. After configuring the alert controller with the actions and style you want, present it using the present(_:animated:completion:) method.
-public class FAAlertController: UIViewController, FAAlertActionDelegate, FAAlertControllerPickerDelegate {
+open class FAAlertController: UIViewController, FAAlertActionDelegate, FAAlertControllerPickerDelegate {
     
     // MARK: Public Properties
     
@@ -46,7 +46,7 @@ public class FAAlertController: UIViewController, FAAlertActionDelegate, FAAlert
     /// The title of the alert.
     ///
     ///The title string is displayed prominently in the alert or action sheet. You should use this string to get the user’s attention and communicate the reason for displaying the alert.
-    override public var title: String? {
+    override open var title: String? {
         get {
             return super.title
         }
@@ -184,12 +184,12 @@ public class FAAlertController: UIViewController, FAAlertActionDelegate, FAAlert
     
     // MARK: View Lifecycle
     
-    override public func loadView() {
+    override open func loadView() {
         alertView = FAAlertControllerView(title: title, message: message, textFields: textFields, actions: actions, preferredAction: preferredAction, items: items)
         view = alertView!
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         let (isSane, reason) = sanityCheck()
         if !isSane {
             guard reason != nil else {
@@ -202,12 +202,12 @@ public class FAAlertController: UIViewController, FAAlertActionDelegate, FAAlert
         view.layoutIfNeeded()
     }
     
-    override public func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.layoutIfNeeded()
     }
     
-    override public func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override open func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
     }
     

@@ -18,9 +18,10 @@ public enum FAAlertActionStyle : Int {
     case destructive
 }
 
-public class FAAlertAction: NSObject {
+open class FAAlertAction: NSObject {
     
     public var title: String?
+    public var attributedTitle: NSAttributedString?
     public let style: FAAlertActionStyle
     public var handler: ((FAAlertAction) -> ())?
     
@@ -28,11 +29,19 @@ public class FAAlertAction: NSObject {
     var isEnabled = true
     var delegate: FAAlertActionDelegate?
     
-    public init(title: String?, style: FAAlertActionStyle, handler: ((FAAlertAction) -> Void)? = nil) {
-        guard let _title = title else {
-            preconditionFailure("Actions added to FAAlertController must have a title")
-        }
-        self.title = _title
+    public init(title: String, style: FAAlertActionStyle, handler: ((FAAlertAction) -> Void)? = nil) {
+        self.title = title
+        self.style = style
+        self.handler = handler
+        
+        let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.text = title
+        button.addTarget(nil, action: #selector(self.performAction), for: .touchUpInside)
+    }
+    
+    public init(attributedTitle: NSAttributedString, style: FAAlertActionStyle, handler: ((FAAlertAction) -> Void)? = nil) {
+        self.attributedTitle = attributedTitle
         self.style = style
         self.handler = handler
         

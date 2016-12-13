@@ -115,6 +115,14 @@ class FAAlertActionView: UIView {
             
         } else if let attributedTitle = action.attributedTitle {
             
+            switch action.style {
+            case .default: break
+            case .cancel:
+                label.textColor = FAAlertControllerAppearanceManager.sharedInstance.cancelButtonTintColor
+            case .destructive:
+                label.textColor = FAAlertControllerAppearanceManager.sharedInstance.destructiveButtonTintColor
+            }
+            
             let attributes = attributedTitle.attributes(
                 at: 0,
                 effectiveRange: nil

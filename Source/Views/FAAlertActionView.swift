@@ -57,7 +57,8 @@ class FAAlertActionView: UIView {
         alignmentView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         alignmentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         alignmentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         alignmentView.leadingAnchor.constraint(equalTo: label.leadingAnchor).isActive = true
         alignmentView.trailingAnchor.constraint(equalTo: label.trailingAnchor).isActive = true
@@ -107,7 +108,15 @@ class FAAlertActionView: UIView {
             
         } else if let attributedTitle = action.attributedTitle {
             
-            label.textAlignment = .center
+            let attributes = attributedTitle.attributes(
+                at: 0,
+                effectiveRange: nil
+            )
+            
+            if let paragraphStyle = attributes[NSParagraphStyleAttributeName] as? NSParagraphStyle {
+                label.textAlignment = paragraphStyle.alignment
+            }
+            
             label.attributedText = attributedTitle
             
         }

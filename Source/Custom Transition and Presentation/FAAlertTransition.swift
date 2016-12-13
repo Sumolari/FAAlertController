@@ -31,6 +31,7 @@ class FAAlertTransition: NSObject, UIViewControllerAnimatedTransitioning {
         }
         
         let container = transitionContext.containerView
+        let fromView = transitionContext.viewController(forKey: .from)?.view
         let style = FAAlertControllerAppearanceManager.sharedInstance.preferredStyle
         
         if mode == .present {
@@ -77,12 +78,23 @@ class FAAlertTransition: NSObject, UIViewControllerAnimatedTransitioning {
                 } else if style == .actionSheet {
                     
                     // 1) Setup the view as it will appear when the transition is complete
-                    let topConstraint = view.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor, constant: 10)
-                    let bottomConstraint = view.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -10)
-                    let actionSheetBottomConstraint = view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10)
+                    
+                    let viewForAnchors = fromView ?? container
+                    
+                    let leadingConstraint = view.leadingAnchor.constraint(greaterThanOrEqualTo: viewForAnchors.leadingAnchor, constant: 10)
+                    let trailingConstraint = view.trailingAnchor.constraint(lessThanOrEqualTo: viewForAnchors.trailingAnchor, constant: -10)
+                    let topConstraint = view.topAnchor.constraint(greaterThanOrEqualTo: viewForAnchors.topAnchor, constant: 10)
+                    let bottomConstraint = view.bottomAnchor.constraint(lessThanOrEqualTo: viewForAnchors.bottomAnchor, constant: -10)
+                    let actionSheetBottomConstraint = view.bottomAnchor.constraint(equalTo: viewForAnchors.bottomAnchor, constant: -10)
+                    let actionSheetMaximumWidth = view.widthAnchor.constraint(lessThanOrEqualToConstant: 540)
+                    let actionSheetCenterX = view.centerXAnchor.constraint(equalTo: viewForAnchors.centerXAnchor)
+                    leadingConstraint.isActive = true
+                    trailingConstraint.isActive = true
                     topConstraint.isActive = true
                     bottomConstraint.isActive = true
                     actionSheetBottomConstraint.isActive = true
+                    actionSheetMaximumWidth.isActive = true
+                    actionSheetCenterX.isActive = true
                     container.layoutIfNeeded()
                     
                     // 2) Scroll to the preferred action

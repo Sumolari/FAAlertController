@@ -57,8 +57,15 @@ class FAAlertActionView: UIView {
         alignmentView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         alignmentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         alignmentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+        let labelLeadingAnchor = label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
+        labelLeadingAnchor.isActive = true
+        let labelTrailingAnchor = label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+        labelTrailingAnchor.isActive = true
+        /* To allow left alignment and centering
+        labelLeadingAnchor.isActive = false
+        labelTrailingAnchor.isActive = false
+        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+         */
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         alignmentView.leadingAnchor.constraint(equalTo: label.leadingAnchor).isActive = true
         alignmentView.trailingAnchor.constraint(equalTo: label.trailingAnchor).isActive = true

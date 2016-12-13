@@ -90,8 +90,12 @@ class FAAlertControllerActionsView: UIScrollView {
                     case .actionSheet:
                         stackView.axis = _actions.count <= 1 ? .horizontal : .vertical
                     }
+                    
+                    var actionViews = [FAAlertActionView]()
+                    
                     for action in _actions {
                         let _view = FAAlertActionView(withAction: action)
+                        actionViews.append(_view)
                         stackView.addArrangedSubview(_view)
                         if (action == _actions.first) {
                             if stackView.axis == .horizontal {
@@ -108,6 +112,20 @@ class FAAlertControllerActionsView: UIScrollView {
                             stackView.addArrangedSubview(separator)
                         }
                     }
+                    
+                    /* To allow left alignment and centering
+                    _ = actionViews.dropFirst().reduce(actionViews.first) {
+                        
+                        guard let prev = $0 else { return $1 }
+                        
+                        $1.label.leadingAnchor.constraint(equalTo: prev.label.leadingAnchor).isActive = true
+                        $1.label.trailingAnchor.constraint(equalTo: prev.label.trailingAnchor).isActive = true
+                        
+                        return $1
+                        
+                    }
+                     */
+                    
                 }
             }
         }

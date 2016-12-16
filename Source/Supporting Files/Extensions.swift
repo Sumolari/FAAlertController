@@ -14,16 +14,20 @@ extension UIImage {
         let scaleFactor = UIScreen.main.scale
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, scaleFactor)
         view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-        var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        let optionalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
+        guard let image = optionalImage else { return UIImage() }
+        
         if let rect = rect {
-            let scaledRect = rect.applying(CGAffineTransform(scaleX: scaleFactor , y: scaleFactor))
+            let scaledRect = rect.applying(CGAffineTransform(scaleX: scaleFactor, y: scaleFactor))
             if let imageRef = image.cgImage?.cropping(to: scaledRect) {
-                image = UIImage(cgImage: imageRef)
+                return UIImage(cgImage: imageRef)
             }
         }
+        
         return image
+        
     }
     
 }
